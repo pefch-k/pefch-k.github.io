@@ -1,24 +1,551 @@
 <!DOCTYPE html>
-<html lang="el">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Χαρίσιος Ι. Κουτσώνας</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            margin-top: 50px;
-            background-color: #f4f4f9;
-            color: #333;
-        }
-        h1 { color: #0078D7; }
-        p { font-size: 1.2em; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Charisios Koutsonas — Mathematics & Formal Logic</title>
+<meta name="description" content="Charisios Koutsonas — undergraduate mathematics student at Aristotle University of Thessaloniki.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700;9..144,900&family=IBM+Plex+Serif:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --paper:#F1F3EC;
+    --paper-dim:#E7EAE0;
+    --ink:#14161F;
+    --ink-soft:#41453E;
+    --rule:#C7CBB8;
+    --green:#1E6B4E;
+    --crimson:#9B2A2A;
+    --board:#12261F;
+    --board-line:#2B4A3D;
+    --chalk:#EDEAD8;
+    --chalk-dim:#B9C4B9;
+
+    --display:'Fraunces', serif;
+    --body:'IBM Plex Serif', serif;
+    --mono:'IBM Plex Mono', monospace;
+
+    --max:920px;
+    --pad:clamp(20px, 5vw, 64px);
+  }
+
+  *{ box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+  @media (prefers-reduced-motion: reduce){
+    html{ scroll-behavior:auto; }
+    *{ animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important; }
+  }
+
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:var(--body);
+    font-size:17px;
+    line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  a{ color:inherit; }
+  ::selection{ background:var(--green); color:var(--chalk); }
+
+  img{ max-width:100%; display:block; }
+
+  /* ---------- layout helpers ---------- */
+  .wrap{ max-width:var(--max); margin:0 auto; padding:0 var(--pad); }
+
+  .eyebrow{
+    font-family:var(--mono);
+    font-size:12.5px;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    color:var(--green);
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:14px;
+  }
+  .eyebrow::before{ content:"⊢"; font-size:15px; color:var(--crimson); }
+
+  .qed{
+    display:inline-block;
+    width:10px; height:10px;
+    background:var(--ink);
+    margin-left:8px;
+    vertical-align:middle;
+  }
+  .qed.light{ background:var(--chalk); }
+
+  /* ---------- nav ---------- */
+  header.site-nav{
+    position:sticky; top:0; z-index:50;
+    background:rgba(241,243,236,.92);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--rule);
+  }
+  .nav-row{
+    max-width:var(--max); margin:0 auto; padding:14px var(--pad);
+    display:flex; align-items:center; justify-content:space-between;
+    font-family:var(--mono); font-size:13px;
+  }
+  .nav-name{ font-weight:600; letter-spacing:.02em; }
+  .nav-links{ display:flex; gap:18px; list-style:none; margin:0; padding:0; }
+  .nav-links a{ text-decoration:none; color:var(--ink-soft); position:relative; }
+  .nav-links a:hover, .nav-links a:focus-visible{ color:var(--green); }
+  .nav-links a:focus-visible{ outline:2px solid var(--green); outline-offset:4px; }
+  @media (max-width:620px){ .nav-links{ display:none; } }
+
+  /* ---------- hero ---------- */
+  .hero{ padding:96px 0 72px; }
+  .hero .eyebrow{ margin-bottom:22px; }
+  h1.name{
+    font-family:var(--display);
+    font-weight:900;
+    font-size:clamp(2.6rem, 7vw, 4.6rem);
+    line-height:1.02;
+    letter-spacing:-.01em;
+    margin:0 0 14px;
+  }
+  .role{
+    font-family:var(--mono);
+    font-size:clamp(14px, 2vw, 17px);
+    color:var(--ink-soft);
+    margin:0 0 34px;
+  }
+  .role .sep{ color:var(--crimson); margin:0 10px; }
+
+  .thesis{
+    max-width:620px;
+    font-size:1.08rem;
+    color:var(--ink-soft);
+    border-left:2px solid var(--rule);
+    padding-left:20px;
+    margin:0 0 40px;
+  }
+
+  .hero-links{ display:flex; flex-wrap:wrap; gap:12px; }
+  .pill{
+    font-family:var(--mono);
+    font-size:13px;
+    text-decoration:none;
+    padding:9px 16px;
+    border:1px solid var(--ink);
+    border-radius:2px;
+    color:var(--ink);
+    transition:background .15s ease, color .15s ease;
+  }
+  .pill:hover, .pill:focus-visible{ background:var(--ink); color:var(--paper); }
+  .pill.primary{ background:var(--green); border-color:var(--green); color:var(--chalk); }
+  .pill.primary:hover{ background:var(--ink); border-color:var(--ink); }
+
+  /* ---------- sections (paper) ---------- */
+  section{ padding:64px 0; border-top:1px solid var(--rule); }
+  section .sec-head{
+    display:flex; align-items:baseline; justify-content:space-between;
+    margin-bottom:30px;
+  }
+  h2.sec-title{
+    font-family:var(--display);
+    font-weight:700;
+    font-size:clamp(1.5rem, 3.4vw, 2.1rem);
+    margin:0;
+  }
+
+  /* about */
+  .about-box{
+    border-left:3px solid var(--green);
+    padding:4px 0 4px 24px;
+  }
+  .about-box p{ margin:0 0 16px; color:var(--ink-soft); }
+  .about-box p:last-child{ margin-bottom:0; }
+
+  /* toolset */
+  .tool-groups{ display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:28px; }
+  .tool-group h3{
+    font-family:var(--mono); font-size:12.5px; letter-spacing:.1em; text-transform:uppercase;
+    color:var(--ink-soft); margin:0 0 12px; font-weight:500;
+  }
+  .chips{ display:flex; flex-wrap:wrap; gap:8px; }
+  .chip{
+    font-family:var(--mono); font-size:13px;
+    padding:5px 11px;
+    background:var(--paper-dim);
+    border:1px solid var(--rule);
+    border-radius:2px;
+  }
+
+  /* timeline */
+  .timeline{ position:relative; padding-left:28px; }
+  .timeline::before{
+    content:""; position:absolute; left:5px; top:6px; bottom:6px;
+    width:1px; background:var(--rule);
+  }
+  .t-item{ position:relative; margin-bottom:34px; }
+  .t-item:last-child{ margin-bottom:0; }
+  .t-item::before{
+    content:""; position:absolute; left:-28px; top:6px;
+    width:9px; height:9px; border-radius:50%;
+    background:var(--paper); border:2px solid var(--green);
+  }
+  .t-item .t-date{ font-family:var(--mono); font-size:12.5px; color:var(--crimson); margin-bottom:4px; }
+  .t-item h3{ font-family:var(--display); font-weight:600; font-size:1.15rem; margin:0 0 3px; }
+  .t-item .t-org{ font-size:.92rem; color:var(--ink-soft); font-style:italic; margin:0 0 8px; }
+  .t-item ul{ margin:6px 0 0; padding-left:18px; color:var(--ink-soft); font-size:.97rem; }
+  .t-item li{ margin-bottom:4px; }
+
+  /* ---------- constructions / projects (blackboard) ---------- */
+  .board{
+    background:var(--board);
+    color:var(--chalk);
+    border-top:1px solid var(--board-line);
+    border-bottom:1px solid var(--board-line);
+  }
+  .board .eyebrow{ color:#6FCF97; }
+  .board .eyebrow::before{ color:#E0A458; }
+  .board h2.sec-title{ color:var(--chalk); }
+  .board .sec-sub{ font-family:var(--mono); font-size:13px; color:var(--chalk-dim); margin-top:-18px; margin-bottom:36px; max-width:560px; }
+
+  .project{
+    border:1px solid var(--board-line);
+    border-radius:3px;
+    margin-bottom:28px;
+    overflow:hidden;
+    background:rgba(237,234,216,.02);
+  }
+  .project:last-child{ margin-bottom:0; }
+  .project-head{
+    display:flex; align-items:flex-start; justify-content:space-between; gap:16px;
+    padding:20px 22px;
+    border-bottom:1px solid var(--board-line);
+    flex-wrap:wrap;
+  }
+  .project-head h3{
+    font-family:var(--display); font-weight:600; font-size:1.3rem; margin:0 0 6px; color:var(--chalk);
+  }
+  .project-head p{ margin:0; color:var(--chalk-dim); font-size:.94rem; max-width:480px; }
+  .project-links{ display:flex; gap:10px; flex-shrink:0; }
+  .project-links a{
+    font-family:var(--mono); font-size:12.5px; text-decoration:none;
+    padding:7px 13px; border:1px solid var(--chalk-dim); border-radius:2px; color:var(--chalk);
+    transition:background .15s ease, color .15s ease, border-color .15s ease;
+    white-space:nowrap;
+  }
+  .project-links a:hover, .project-links a:focus-visible{ background:#6FCF97; border-color:#6FCF97; color:var(--board); }
+
+  .project-tags{ padding:0 22px; margin-top:14px; display:flex; gap:8px; flex-wrap:wrap; }
+  .board .chip{ background:transparent; border-color:var(--board-line); color:var(--chalk-dim); }
+
+  .demo-frame-wrap{ padding:22px; }
+  .demo-frame{
+    width:100%; height:640px;
+    border:1px solid var(--board-line);
+    border-radius:3px;
+    background:var(--paper);
+  }
+  .demo-note{
+    font-family:var(--mono); font-size:11.5px; color:var(--chalk-dim);
+    padding:0 22px 20px; margin:0;
+  }
+
+  .link-only{ padding:20px 22px; }
+  .link-only a.readme-link{
+    font-family:var(--mono); font-size:13px; color:#6FCF97; text-decoration:none; border-bottom:1px dotted #6FCF97;
+  }
+
+ /* ---------- contact ---------- */
+  .contact-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+    column-gap:56px;
+    row-gap:28px;
+    margin-bottom:56px;
+  }
+  
+  .contact-item h3{
+    font-family:var(--mono); font-size:11px; letter-spacing:.1em; text-transform:uppercase;
+    color:var(--ink-soft); margin:0 0 6px; font-weight:500;
+  }
+  .contact-item a, .contact-item span{
+    font-family:var(--display); font-size:1rem; font-weight:500; text-decoration:none;
+    border-bottom:1px solid var(--rule);
+  }
+  .contact-item a:hover{ border-color:var(--green); color:var(--green); }
+
+  footer{
+    padding:36px var(--pad) 48px;
+    text-align:center;
+    font-family:var(--mono); font-size:12px; color:var(--ink-soft);
+  }
+footer .footer-lead{
+    font-family:var(--body);
+    font-size:1rem;
+    color:var(--ink-soft);
+    max-width:420px;
+    margin:0 auto 16px;
+  }
+  footer .footer-credit{ margin:0; }
+  /* scroll reveal */
+  .reveal{ opacity:0; transform:translateY(14px); transition:opacity .6s ease, transform .6s ease; }
+  .reveal.in{ opacity:1; transform:translateY(0); }
+</style>
 </head>
 <body>
-    <h1>Γεια σου, Κόσμε! 👋</h1>
-    <p>Καλώς ήρθες στην προσωπική μου σελίδα στο GitHub Pages.</p>
-    <p>Αυτή είναι η εισαγωγή μου.</p>
+
+<header class="site-nav">
+  <div class="nav-row">
+   <!-- <span class="nav-name">CH. KOUTSONAS</span>-->
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#toolset">Toolset</a></li>
+      <li><a href="#timeline">Timeline</a></li>
+      <li><a href="#constructions">Constructions</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </div>
+</header>
+
+<main>
+
+  <!-- HERO -->
+  <section class="hero wrap" style="border-top:none;">
+    
+    <h1 class="name">Charisios&nbsp;Koutsonas</h1>
+    <p class="role">Undergraduate Mathematics Student <span class="sep">at</span> Aristotle University of Thessaloniki</p>
+    <p class="thesis">
+      Final-year mathematics student focused on algebra and mathematical logic, currently
+      formalizing proofs in Lean and building small constraint-satisfaction tools in Prolog —
+      with a parallel track in cybersecurity from a hands-on internship in SecOps tooling.
+    </p>
+    <div class="hero-links">
+      <a class="pill primary" href="#constructions">View constructions</a>
+      <a class="pill" href="mailto:koutsonas.ch@gmail.com">Email</a>
+      <a class="pill" href="https://www.linkedin.com/in/koutsonas-charisios" target="_blank" rel="noopener">LinkedIn</a>
+      <a class="pill" href="https://github.com/pefch-k" target="_blank" rel="noopener">GitHub</a>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about" class="wrap reveal">
+    <div class="sec-head">
+      <div>
+        <h2 class="sec-title">About</h2>
+      </div>
+    </div>
+    <div class="about-box">
+      <p>
+        I am a final-year student at the Department of Mathematics of the Aristotle University of
+        Thessaloniki. My academic interests focus primarily on algebra and computer science, with a
+        particular emphasis on mathematical logic. Through my studies I've developed a capacity for
+        abstract thinking and rigorous analysis, and I keep pushing at the edges of what I currently understand.
+      </p>
+      <p>
+        During a cybersecurity internship I worked directly with modern corporate IT environments,
+        gaining hands-on experience with the structure of operating systems — which broadened my
+        perspective on formal systems more generally. That experience fed directly into my current
+        work with the Lean proof assistant: I'd already partially mastered pieces of both disciplines
+        that underpin it.
+      </p>
+      <p>
+        My goal, from the start of my academic path, has stayed the same: keep developing my skills,
+        and keep exploring the edge of what I know.
+        <span class="qed"></span>
+      </p>
+    </div>
+  </section>
+
+  <!-- TOOLSET -->
+  <section id="toolset" class="wrap reveal">
+    <div class="sec-head">
+      <div>
+        <h2 class="sec-title">Toolset</h2>
+      </div>
+    </div>
+    <div class="tool-groups">
+      <div class="tool-group">
+        <h3>Programming</h3>
+        <div class="chips">
+          <span class="chip">Python</span>
+          <span class="chip">Prolog</span>
+          <span class="chip">Lean</span>
+          <span class="chip">Shell Scripting</span>
+          <span class="chip">Fortran</span>
+          <span class="chip">R</span>
+          <span class="chip">MATLAB</span>
+          <span class="chip">Mathematica</span>
+        </div>
+      </div>
+      <div class="tool-group">
+        <h3>Tools &amp; Networks</h3>
+        <div class="chips">
+          <span class="chip">Git</span>
+          <span class="chip">Wireshark</span>
+          <span class="chip">Wazuh</span>
+          <span class="chip">Shuffle</span>
+          <span class="chip">Bareos</span>
+          <span class="chip">LaTeX</span>
+        </div>
+      </div>
+      <div class="tool-group">
+        <h3>Systems &amp; Languages</h3>
+        <div class="chips">
+          <span class="chip">Linux (Ubuntu)</span>
+          <span class="chip">Windows</span>
+          <span class="chip">Greek — Native</span>
+          <span class="chip">English — C2</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TIMELINE -->
+  <section id="timeline" class="wrap reveal">
+    <div class="sec-head">
+      <div>
+        <h2 class="sec-title">Timeline</h2>
+      </div>
+    </div>
+    <div class="timeline">
+      <div class="t-item">
+        <p class="t-date">Oct 2021 — Present</p>
+        <h3>B.Sc. in Mathematics</h3>
+        <p class="t-org">Aristotle University of Thessaloniki</p>
+      </div>
+      <div class="t-item">
+        <p class="t-date">Dec 2024 — May 2025</p>
+        <h3>Google.org Cybersecurity Seminar</h3>
+        <p class="t-org">Aristotle University of Thessaloniki &amp; Google.org</p>
+      </div>
+      <div class="t-item">
+        <p class="t-date">Jun 2025 — Jul 2026</p>
+        <h3>Cybersecurity Internship — CYCLOPT PC</h3>
+        <p class="t-org">Thessaloniki, Greece</p>
+        <ul>
+          <li>Designed a preliminary system leveraging existing, open-source security tools.</li>
+          <li>Integrated these tools into a unified SecOps workflow.</li>
+        </ul>
+      </div>
+      <div class="t-item">
+        <p class="t-date">Feb 2026 — Jun 2026</p>
+        <h3>Project: Proof Assistants &amp; Formal Verification</h3>
+        <p class="t-org">Practical engagement with the Lean proof assistant</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONSTRUCTIONS / PROJECTS -->
+  <section id="constructions" class="board">
+    <div class="wrap reveal">
+      <div class="sec-head">
+        <div>
+          <h2 class="sec-title">Selected work</h2>
+        </div>
+      </div>
+      <p class="sec-sub">Live constructions from <a href="https://github.com/pefch-k" target="_blank" rel="noopener" style="color:#6FCF97;">github.com/pefch-k</a> — everything below is runnable, not just described.</p>
+
+      <!-- Project 1: Sudoku (live demo) -->
+      <div class="project">
+        <div class="project-head">
+          <div>
+            <h3>2×2 Sudoku</h3>
+            <p>A constraint-satisfaction Sudoku engine written in SWI-Prolog, compiled to WASM and running entirely client-side. Generates puzzles with a provably unique solution and checks/solves boards live.</p>
+          </div>
+          <div class="project-links">
+            <a href="https://github.com/pefch-k/prolog-scripts/tree/main/sudoku-game" target="_blank" rel="noopener">Source</a>
+            <a href="https://pefch-k.github.io/prolog-scripts/sudoku-game/" target="_blank" rel="noopener">Open full screen ↗</a>
+          </div>
+        </div>
+        <div class="project-tags">
+          <span class="chip">Prolog</span>
+          <span class="chip">SWI-Prolog WASM</span>
+        </div>
+        <div class="demo-frame-wrap">
+          <iframe class="demo-frame" src="https://pefch-k.github.io/prolog-scripts/sudoku-game/" title="2x2 Sudoku live demo" loading="lazy"></iframe>
+        </div>
+        <p class="demo-note">Live embed — requires GitHub Pages enabled on the prolog-scripts repository. See setup note below.</p>
+      </div>
+
+      <!-- Project 2: Lean formalization (no live demo, code-only) -->
+      <div class="project">
+        <div class="project-head">
+          <div>
+            <h3>MacWilliams Identity — Formalized in Lean</h3>
+            <p>A formal verification of the MacWilliams Identity for binary linear codes: proves that the weight enumerator of a code determines that of its orthogonal dual, using Mathlib's Submodule and Hamming-space machinery.</p>
+          </div>
+          <div class="project-links">
+            <a href="https://github.com/pefch-k/lean-coding-theory-macwilliams-identity" target="_blank" rel="noopener">Source</a>
+          </div>
+        </div>
+        <div class="project-tags">
+          <span class="chip">Lean 4</span>
+          <span class="chip">Mathlib</span>
+          <span class="chip">Coding Theory</span>
+        </div>
+        <div class="link-only">
+          <a class="readme-link" href="https://github.com/pefch-k/lean-coding-theory-macwilliams-identity#readme" target="_blank" rel="noopener">Read the full theorem writeup on GitHub →</a>
+        </div>
+      </div>
+
+      <div class="link-only" style="padding-top:4px;">
+        <a class="readme-link" href="https://github.com/pefch-k?tab=repositories" target="_blank" rel="noopener">Browse all repositories on GitHub →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact" class="wrap reveal">
+    <div class="sec-head">
+      <div>
+        <h2 class="sec-title">Contact</h2>
+      </div>
+    </div>
+   <div class="contact-grid">
+      <div class="contact-item">
+        <h3>Email</h3>
+        <a href="mailto:koutsonas.ch@gmail.com">koutsonas.ch@gmail.com</a>
+      </div>
+      <div class="contact-item">
+        <h3>Academic Email</h3>
+        <a href="mailto:charisiik@math.auth.gr">charisiik@math.auth.gr</a>
+      </div>
+      <div class="contact-item">
+        <h3>LinkedIn</h3>
+        <a href="https://www.linkedin.com/in/koutsonas-charisios" target="_blank" rel="noopener">koutsonas-charisios</a>
+      </div>
+      <div class="contact-item">
+        <h3>GitHub</h3>
+        <a href="https://github.com/pefch-k" target="_blank" rel="noopener">pefch-k</a>
+      </div>
+      <div class="contact-item">
+        <h3>Based in</h3>
+        <span>Aiani, Kozani, Greece</span>
+      </div>
+    </div>
+  </section>
+<footer>
+  <p class="footer-lead">Have a question, a collaboration idea, or just want to talk mathematicalγιτ?</p>
+  <p class="footer-cta">Do not hesitate to <a href="mailto:koutsonas.ch@gmail.com">contact me</a>.</p>
+</footer>
+</body>
+</html>
+</main>
+
+
+<script>
+  // Subtle, deliberate scroll reveal — respects prefers-reduced-motion via CSS above.
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting){
+        entry.target.classList.add('in');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12 });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+
 </body>
 </html>
